@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: weather-data-pv
+spec:
+  capacity:
+    storage: 500Mi
+  accessModes:
+    - ReadOnlyMany
+  hostPath:
+    path: "path to weather data on your machine"
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: weather-data-pvc
+spec:
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+      storage: 500Mi
+  storageClassName: ""
+  volumeName: weather-data-pv

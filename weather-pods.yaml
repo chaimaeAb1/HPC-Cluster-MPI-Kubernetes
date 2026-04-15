@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mpi-pod-1
+  labels:
+    app: weather-mpi
+spec:
+  hostname: mpi-pod-1
+  subdomain: mpi-service
+  containers:
+  - name: mpi-container
+    image: localhost:32000/ubuntu-mpi-py:latest
+    imagePullPolicy: Always
+    ports:
+    - containerPort: 22
+    volumeMounts:
+    - name: weather-data
+      mountPath: /weather_data
+      readOnly: true
+  volumes:
+  - name: weather-data
+    persistentVolumeClaim:
+      claimName: weather-data-pvc
+  restartPolicy: Never
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mpi-pod-2
+  labels:
+    app: weather-mpi
+spec:
+  hostname: mpi-pod-2
+  subdomain: mpi-service
+  containers:
+  - name: mpi-container
+    image: localhost:32000/ubuntu-mpi-py:latest
+    imagePullPolicy: Always
+    ports:
+    - containerPort: 22
+    volumeMounts:
+    - name: weather-data
+      mountPath: /weather_data
+      readOnly: true
+  volumes:
+  - name: weather-data
+    persistentVolumeClaim:
+      claimName: weather-data-pvc
+  restartPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mpi-service
+spec:
+  clusterIP: None
+  selector:
+    app: weather-mpi
+  ports:
+  - port: 22
+    targetPort: 22

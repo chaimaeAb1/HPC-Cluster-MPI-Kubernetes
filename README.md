@@ -1,4 +1,4 @@
-# 🌦️ Kubernetes MPI Weather Processing
+#  Kubernetes MPI Weather Processing
 
 ##  Description
 
